@@ -1,0 +1,16 @@
+# To create percentage change measures that calculate the percentage change in number of sales and profit by year, the below DAX codes were created. The first
+# is called 'Percentage Change' which divides the count of the number of sales for the maximum year by the count of sales for the minimum years selected in
+# the dashboard year slider. What this does is for any two selected years the user selects in the year slider, the DAX code will divide the count of sales for
+# the maximum year and divide it by the count of sales for the minimum year and once that is calculated the measure will subtract 1 thereby calculating the
+# percentage change in sales selected in the year slider. The same process is used for the percentage change in profit however the DAX code is using the sum of
+# profit rather than the count of sales to measure the percentage change.
+
+Percentage Change = DIVIDE(
+	CALCULATE(COUNT(sales[SaleKey]),FILTER(sales,sales[InvoiceDate].[Year]=MAX(sales[InvoiceDate].[Year]))),
+	CALCULATE(COUNT(sales[SaleKey]),FILTER(sales,sales[InvoiceDate].[Year]=MIN(sales[InvoiceDate].[Year]))),0)
+	-1
+
+Percentage Change Profit = DIVIDE(
+	CALCULATE(SUM(sales[Profit]),FILTER(sales,sales[InvoiceDate].[Year]=MAX(sales[InvoiceDate].[Year]))),
+	CALCULATE(SUM(sales[Profit]),FILTER(sales,sales[InvoiceDate].[Year]=MIN(sales[InvoiceDate].[Year]))),0)
+	-1
