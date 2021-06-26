@@ -1,0 +1,28 @@
+#To extract the data from WideWorldImporters database, a query to acquire the necessary data from multiple tables is needed. Below, the use of aliases 'S', 'C', 
+#and 'I' are used to shorten the column names and make them more readable. The first join is a LEFT JOIN to match all sales with the respective customer. The two
+#subsequent joins are regular JOIN clauses to bring in the Customer and City tables. The WHERE clause is used to only bring in employees who are sales reps for
+#each particular sale. Now that the SQL query has extracted all of the data needed for sales analysis, we can move on to connecting Power BI to the database to
+#enter this query directly into Power BI.
+
+SELECT S.[Sale Key]
+      ,S.[City Key]
+      ,S.[Customer Key]
+      ,S.[Invoice Date Key]
+      ,S.[Salesperson Key]
+      ,S.[Description]
+      ,S.[Quantity]
+      ,S.[Unit Price]
+      ,S.[Tax Rate]
+      ,S.[Total Excluding Tax]
+      ,S.[Tax Amount]
+      ,S.[Profit]
+      ,S.[Total Including Tax]
+      ,C.[Customer]
+      ,I.[City]
+      ,E.[Employee]	
+      ,E.[Employee Key]
+FROM [WideWorldImportersDW].[Fact].[Sale] S
+LEFT JOIN Dimension.Customer C on S.[Customer Key]=C.[Customer Key]
+JOIN WideWorldImportersDW.Dimension.City I on S.[City Key]=I.[City Key]
+JOIN WideWorldImportersDW.Dimension.Employee E on S.[Salesperson Key]=E.[Employee Key]
+WHERE E.[Is Salesperson]=1
